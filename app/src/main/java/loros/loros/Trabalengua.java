@@ -20,6 +20,16 @@ public class Trabalengua {
     public String description;
     public String label;
 
+    public Trabalengua(String _title) {
+        title = _title;
+    }
+
+    public  Trabalengua(String _title, String _description, String _label) {
+        title = _title;
+        description = _description;
+        label = _label;
+    }
+
     public static ArrayList<Trabalengua> getTrabalenguasFromFile(String filename, Context context){
         final ArrayList<Trabalengua> trabalenguaList = new ArrayList<>();
 
@@ -31,13 +41,11 @@ public class Trabalengua {
 
             // Get Trabalenguas objects from data
             for(int i = 0; i < trabalenguas.length(); i++){
-                Trabalengua trabalengua = new Trabalengua();
+                String _title = trabalenguas.getJSONObject(i).getString("title");
+                String _desc = trabalenguas.getJSONObject(i).getString("description");
+                String _label = trabalenguas.getJSONObject(i).getString("label");
 
-                trabalengua.title = trabalenguas.getJSONObject(i).getString("title");
-                trabalengua.description = trabalenguas.getJSONObject(i).getString("description");
-                trabalengua.label = trabalenguas.getJSONObject(i).getString("label");
-
-                trabalenguaList.add(trabalengua);
+                trabalenguaList.add(new Trabalengua(_title, _desc, _label));
             }
         } catch (JSONException e) {
             e.printStackTrace();
