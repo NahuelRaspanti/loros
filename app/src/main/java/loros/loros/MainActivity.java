@@ -1,5 +1,6 @@
 package loros.loros;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +10,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener {
 
     private RecyclerViewAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -32,10 +33,23 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < trabalenguaList.size(); i++){
             Trabalengua trabalengua = trabalenguaList.get(i);
             String title = trabalengua.title.toUpperCase();
-            mTrabalengua.add(new Trabalengua(title));
+            String desc = trabalengua.description.toUpperCase();
+            String label = trabalengua.label.toUpperCase();
+            mTrabalengua.add(new Trabalengua(title, desc, label));
         }
         mAdapter = new RecyclerViewAdapter(this, mTrabalengua);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(MainActivity.this);
+
     }
 
+    @Override
+    public void onItemClick(int position) {
+        Intent detailIntent = new Intent(this, ChildActivity.class);
+        Trabalengua clickedItem = mTrabalengua.get(position);
+        detailIntent.putExtra("Titulo", clickedItem.getTitle());
+        detailIntent.putExtra("Descripcion", clickedItem.getDescription());
+
+        startActivity(detailIntent);
+    }
 }

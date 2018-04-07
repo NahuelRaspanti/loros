@@ -30,6 +30,14 @@ public class Trabalengua {
         label = _label;
     }
 
+    public String getTitle () {
+        return title;
+    }
+
+    public String getDescription () {
+        return description;
+    }
+
     public static ArrayList<Trabalengua> getTrabalenguasFromFile(String filename, Context context){
         final ArrayList<Trabalengua> trabalenguaList = new ArrayList<>();
 

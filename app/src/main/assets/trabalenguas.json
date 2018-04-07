@@ -1,9 +1,34 @@
 {
 	"trabalenguas":[
 		{
-			"title": "Toto",
-			"description": "Trabalenguas Toto",
-			"label": "Toto"
+			"title": "Pablito clavó",
+			"description": "Pablito clavó un clavito en la cabeza de un calvito. En la cabeza de un calvito un clavo clavó Pablito",
+			"label": "Pablito"
+		},
+		{
+			"title": "Mariana Magaña",
+			"description": "Mariana Magaña desenmarañará mañana la maraña que enmarañara Mariana Mañara",
+			"label": "Mariana Magaña"
+		},
+		{
+			"title": "La Gallina",
+			"description": "La gallina cenicienta en el cenicero está, el que la desencenice buen desencenizador será",
+			"label": "Gallina"
+		},
+		{
+			"title": "Caracatrepa",
+			"description": "Había una caracatrepa con tres caracatrepitos. Cuando la caracatrepa trepa, trepan los tres caracatrepitos",
+			"label": "Caracatrepa"
+		},
+		{
+			"title": "San Roque",
+			"description": "El perro de San Roque no tiene rabo porque Ramón Ramírez se lo ha robado. Y al perro de Ramón Ramírez ¿quién el rabo le ha robado?",
+			"label": "San Roque"
+		},
+		{
+			"title": "Pepe",
+			"description": "Pepe Peña pela papa, pica piña, pita un pito, pica piña,mpela papa,	Pepe Peña",
+			"label": "Pepe"
 		}
 	]
 	 
