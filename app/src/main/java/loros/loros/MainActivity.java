@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         for(int i = 0; i < trabalenguaList.size(); i++){
             Trabalengua trabalengua = trabalenguaList.get(i);
             String title = trabalengua.title.toUpperCase();
-            String desc = trabalengua.description.toUpperCase();
+            String desc = trabalengua.description;
             String label = trabalengua.label.toUpperCase();
             mTrabalengua.add(new Trabalengua(title, desc, label));
         }

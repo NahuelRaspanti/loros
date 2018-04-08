@@ -35,7 +35,7 @@ public class ChildActivity extends AppCompatActivity {
         TextView textViewDesc = findViewById(R.id.my_trabalengua);
 
         textViewTitulo.setText(titulo);
-        textViewDesc.setText(descripcion);
+        textViewDesc.setText(descripcion.toUpperCase());
 
         mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
