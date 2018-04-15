@@ -1,10 +1,17 @@
 package loros.loros;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -15,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private RecyclerViewAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private ArrayList<Trabalengua> mTrabalengua;
+    private FloatingActionButton addButton;
 
 
     @Override
@@ -41,6 +49,16 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(MainActivity.this);
 
+
+        addButton = findViewById(R.id.fab_add);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+        });
+
     }
 
     @Override
@@ -52,4 +70,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         startActivity(detailIntent);
     }
+
+    public void openDialog() {
+        AddDialog diag = new AddDialog();
+        diag.show(getSupportFragmentManager(), "TRABALENGUAS");
+    }
+
+
+
+
 }
