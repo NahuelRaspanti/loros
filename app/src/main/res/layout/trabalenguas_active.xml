@@ -19,6 +19,7 @@
             android:textSize="32sp"
             android:padding="8dp"/>
     </LinearLayout>
+
     <View
         android:id="@+id/selected_overlay"
         android:layout_width="match_parent"

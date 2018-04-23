@@ -1,12 +1,26 @@
 package loros.loros;
 
 import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -18,16 +32,21 @@ public class Trabalengua {
 
     public String title;
     public String description;
-    public String label;
+    public boolean active;
 
     public Trabalengua(String _title) {
         title = _title;
     }
 
-    public  Trabalengua(String _title, String _description, String _label) {
+    public  Trabalengua(String _title, String _description) {
         title = _title;
         description = _description;
-        label = _label;
+    }
+
+    public Trabalengua(String _title, String _description, boolean _active) {
+        title = _title;
+        description = _description;
+        active = _active;
     }
 
     public String getTitle () {
@@ -38,35 +57,23 @@ public class Trabalengua {
         return description;
     }
 
+    public boolean isActive() {return active;}
+
     public static ArrayList<Trabalengua> getTrabalenguasFromFile(String filename, Context context){
-        final ArrayList<Trabalengua> trabalenguaList = new ArrayList<>();
-
-        try {
-            // Load data
-            String jsonString = loadJsonFromAsset("trabalenguas.json", context);
-            JSONObject json = new JSONObject(jsonString);
-            JSONArray trabalenguas = json.getJSONArray("trabalenguas");
-
-            // Get Trabalenguas objects from data
-            for(int i = 0; i < trabalenguas.length(); i++){
-                String _title = trabalenguas.getJSONObject(i).getString("title");
-                String _desc = trabalenguas.getJSONObject(i).getString("description");
-                String _label = trabalenguas.getJSONObject(i).getString("label");
-
-                trabalenguaList.add(new Trabalengua(_title, _desc, _label));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        final ArrayList<Trabalengua> trabalenguaList;
+        String jsonString = loadJsonFromAsset("trabalenguas.json", context);
+        trabalenguaList = new Gson().fromJson(jsonString, new TypeToken<ArrayList<Trabalengua>>(){}.getType());
         return trabalenguaList;
     }
+
 
     private static String loadJsonFromAsset(String filename, Context context) {
         String json = null;
 
         try {
-            InputStream is = context.getAssets().open(filename);
+            String path = Environment.getExternalStorageDirectory() + "/" + filename;
+            File file = new File(path);
+            FileInputStream is = new FileInputStream(file);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
