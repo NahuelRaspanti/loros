@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             switch (item.getItemId()) {
                 case R.id.menu_remove:
                     mAdapter.removeItems(mAdapter.getSelectedItems());
-                    saveTrabalenguas();
+                    saveTrabalenguas(mTrabalengua);
                     mode.finish();
                     return true;
                 default:
@@ -150,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         else {
             Intent detailIntent = new Intent(this, ChildActivity.class);
             Trabalengua clickedItem = mTrabalengua.get(position);
+            String json = new Gson().toJson(mTrabalengua);
+            detailIntent.putExtra("List", json);
+            detailIntent.putExtra("Position", position);
             detailIntent.putExtra("Titulo", clickedItem.getTitle());
             detailIntent.putExtra("Descripcion", clickedItem.getDescription());
 
@@ -194,14 +197,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     }
 
-    private void saveTrabalenguas() {
+    private void saveTrabalenguas(ArrayList<Trabalengua> trab) {
         try {
             Writer output = null;
             String outDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/trabalenguas.json";
             File file = new File(outDir);
             output = new BufferedWriter(new FileWriter(file));
 
-            String json = new Gson().toJson(mTrabalengua);
+            String json = new Gson().toJson(trab);
             output.write(json);
             output.close();
         }
