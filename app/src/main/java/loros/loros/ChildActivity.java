@@ -5,6 +5,10 @@ import android.os.Environment;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.ScrollingMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,6 +73,8 @@ public class ChildActivity extends AppCompatActivity {
         textViewTitle.setText(titulo);
         textViewDesc.setText(descripcion.toUpperCase());
 
+        textViewTitle.setSelected(true);
+
         mEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,10 +82,17 @@ public class ChildActivity extends AppCompatActivity {
                 if(ACTIVE) {
                     textViewTitle.setText(titulo.toUpperCase());
                     textViewDesc.setText(descripcion.toUpperCase());
+
                     mEdit.setText("EDITAR");
+
                     mSave.setVisibility(View.GONE);
+
                     mEditableTextTitle.setVisibility(View.GONE);
                     textViewTitle.setVisibility(View.VISIBLE);
+
+                    mEditableTextDesc.setVisibility(View.GONE);
+                    textViewDesc.setVisibility(View.VISIBLE);
+
                     mEditableTextTitle.setText(titulo.toUpperCase());
                     mEditableTextDesc.setText(descripcion.toUpperCase());
                     ACTIVE = false;
@@ -88,10 +101,13 @@ public class ChildActivity extends AppCompatActivity {
                 else {
                     mEdit.setText("CANCELAR");
                     mSave.setVisibility(View.VISIBLE);
+
                     mEditableTextTitle.setVisibility(View.VISIBLE);
                     mEditableTextDesc.setVisibility(View.VISIBLE);
+
                     textViewTitle.setVisibility(View.GONE);
                     textViewDesc.setVisibility(View.GONE);
+
                     mEditableTextTitle.setText(titulo.toUpperCase());
                     mEditableTextDesc.setText(descripcion.toUpperCase());
                     ACTIVE = true;
@@ -111,8 +127,8 @@ public class ChildActivity extends AppCompatActivity {
                 trabalenguaList.set(position, new Trabalengua(editedTitle, editedDesc));
                 saveTrabalenguas(trabalenguaList);
 
-                textViewTitle.setText(editedTitle);
-                textViewDesc.setText(editedDesc);
+                textViewTitle.setText(editedTitle.toUpperCase());
+                textViewDesc.setText(editedDesc.toUpperCase());
 
                 mEditableTextTitle.setVisibility(View.GONE);
                 textViewTitle.setVisibility(View.VISIBLE);
@@ -120,6 +136,7 @@ public class ChildActivity extends AppCompatActivity {
                 mEditableTextDesc.setVisibility(View.GONE);
                 textViewDesc.setVisibility(View.VISIBLE);
 
+                Toast.makeText(ChildActivity.this, "TRABALENGUAS GUARDADO!", Toast.LENGTH_SHORT).show();
                 ACTIVE = false;
             }
         });

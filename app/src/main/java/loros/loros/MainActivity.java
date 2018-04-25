@@ -48,43 +48,36 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     private RecyclerViewAdapter mAdapter;
     private RecyclerView mRecyclerView;
-    private ArrayList<Trabalengua> mTrabalengua;
+    private ArrayList<Trabalengua> mTrabalengua = new ArrayList<>();
     private FloatingActionButton addButton;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private ActionMode actionMode;
-    private int MY_STORAGE_PERMISSION = 1;
+    private int MY_PERMISSIONS = 1;
+    private final String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        askForPermissions();
-
-        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/trabalenguas.json");
-        if(!f.isFile()) {
-            copyAssets();
+        if(hasPermissions()) {
+            fillTrabalenguasList();
         }
+        else {
+            askForPermissions();
+        }
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mTrabalengua = new ArrayList<>();
         // specify an adapter (see also next example)
 
-        final ArrayList<Trabalengua> trabalenguaList = Trabalengua.getTrabalenguasFromFile("trabalenguas.json", this);
-
-        for(int i = 0; i < trabalenguaList.size(); i++){
-            Trabalengua trabalengua = trabalenguaList.get(i);
-            String title = trabalengua.title.toUpperCase();
-            String desc = trabalengua.description;
-            mTrabalengua.add(new Trabalengua(title, desc));
-        }
         mAdapter = new RecyclerViewAdapter(this, mTrabalengua);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(MainActivity.this);
 
-
+        //ToDo Grisar botón si no se tienen los permisos necesarios
         addButton = findViewById(R.id.fab_add);
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +88,47 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         });
 
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(hasPermissions()) {
+            mTrabalengua.clear();
+            fillTrabalenguasList();
+            mAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    private void fillTrabalenguasList() {
+
+
+        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/trabalenguas.json");
+        if(!f.isFile()) {
+            copyAssets();
+        }
+
+        final ArrayList<Trabalengua> trabalenguaList = Trabalengua.getTrabalenguasFromFile("trabalenguas.json", this);
+
+        for(int i = 0; i < trabalenguaList.size(); i++){
+            Trabalengua trabalengua = trabalenguaList.get(i);
+            String title = trabalengua.title.toUpperCase();
+            String desc = trabalengua.description;
+            mTrabalengua.add(new Trabalengua(title, desc));
+        }
+    }
+
+    private boolean hasPermissions(){
+        int res = 0;
+        String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        for(String perms: permissions) {
+            res = checkCallingOrSelfPermission(perms);
+            if(!(res == PackageManager.PERMISSION_GRANTED)){
+                return false;
+            }
+        }
+        return true;
     }
 
     private class ActionModeCallback implements ActionMode.Callback {
@@ -257,29 +291,33 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
     private void askForPermissions() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_STORAGE_PERMISSION);
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                && (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE))){
 
-            }
+            Toast.makeText(this, "LOS PERMISOS SON NECESARIOS", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS);
         }
+        else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS);
+        }
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        if(requestCode == MY_STORAGE_PERMISSION) {
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "YA EXISTEN LOS PERMISOS", Toast.LENGTH_SHORT).show();
+        if(requestCode == MY_PERMISSIONS) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                fillTrabalenguasList();
             }
             else {
                 Toast.makeText(this, "NECESITAS ACEPTAR LOS PERMISOS", Toast.LENGTH_SHORT).show();
             }
+        }
+        else{
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

@@ -28,9 +28,14 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:textColor="@android:color/black"
-                android:autoSizeMaxTextSize="200dp"
-                android:autoSizeTextType="uniform"
-                android:textSize="28sp" />
+                android:textSize="20sp"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit ="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scrollHorizontally="true"
+                android:text="MARIANA MAGANA"
+                android:singleLine="true"/>
 
             <EditText
                 android:id="@+id/my_title_edit"
@@ -38,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:textColor="@android:color/black"
-                android:textSize="28sp"
+                android:textSize="20sp"
                 android:visibility="gone" />
             <Button
                 android:id="@+id/edit_button"
@@ -68,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
+                android:textSize="14sp"
                 android:padding="16dp"/>
 
             <EditText
@@ -75,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
+                android:textSize="14sp"
                 android:padding="16dp"
                 android:visibility="gone"/>
         </LinearLayout>
@@ -84,24 +91,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="VELOCIDAD"
-        android:paddingLeft="16dp"/>
+        android:paddingStart="16dp"/>
     <SeekBar
         android:id="@+id/trab_speed"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:progress="50"
-        android:paddingLeft="16dp"/>
+        android:paddingStart="16dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TONO"
-        android:paddingLeft="16dp"/>
+        android:paddingStart="16dp"/>
     <SeekBar
         android:id="@+id/trab_pitch"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:progress="50"
-        android:paddingLeft="16dp"/>
+        android:paddingStart="16dp"/>
 
 
 </LinearLayout>
