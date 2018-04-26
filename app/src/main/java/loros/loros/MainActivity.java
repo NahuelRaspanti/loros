@@ -35,6 +35,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -102,13 +103,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
     private void fillTrabalenguasList() {
-
-
         File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/trabalenguas.json");
         if(!f.isFile()) {
             copyAssets();
         }
-
         final ArrayList<Trabalengua> trabalenguaList = Trabalengua.getTrabalenguasFromFile("trabalenguas.json", this);
 
         for(int i = 0; i < trabalenguaList.size(); i++){
@@ -249,39 +247,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 
     private void copyAssets() {
-        AssetManager assetManager = getAssets();
-        String[] files = null;
-        try {
-            files = assetManager.list("");
-        } catch (IOException e) {
-            Log.e("tag", "Failed to get asset file list.", e);
+                String json = null;
+                try {
+                    InputStream inputStream = getAssets().open("trabalenguas.json");
+                    int size = inputStream.available();
+                    byte[] buffer = new byte[size];
+                    inputStream.read(buffer);
+                    inputStream.close();
+                    json = new String(buffer, "UTF-8");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ArrayList<Trabalengua> trabalenguaList = new Gson().fromJson(json, new TypeToken<ArrayList<Trabalengua>>() {
+                }.getType());
+                saveTrabalenguas(trabalenguaList);
         }
-        for(String filename : files) {
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                in = assetManager.open(filename);
 
-                String outDir = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-                File outFile = new File(outDir, filename);
-
-                boolean exists =      outFile.exists();      // Check if the file exists
-                boolean isDirectory = outFile.isDirectory(); // Check if it's a directory
-                boolean isFile =      outFile.isFile();
-
-                out = new FileOutputStream(outFile);
-                copyFile(in, out);
-                in.close();
-                in = null;
-                out.flush();
-                out.close();
-                out = null;
-            } catch(IOException e) {
-                Log.e("tag", "Failed to copy asset file: " + filename, e);
-            }
-        }
-    }
     private void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];
         int read;
