@@ -1,13 +1,16 @@
-package loros.loros;
+package com.loros.loros;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.method.ScrollingMovementMethod;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.Menu;
@@ -23,14 +26,13 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.w3c.dom.Text;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Random;
 
 public class ChildActivity extends AppCompatActivity {
 
@@ -74,6 +76,42 @@ public class ChildActivity extends AppCompatActivity {
         textViewDesc.setText(descripcion.toUpperCase());
 
         textViewTitle.setSelected(true);
+
+
+        //Clickable words
+        SpannableString ss = new SpannableString(descripcion.toUpperCase());
+        String[] words = descripcion.split(" ");
+        int i = 0;
+        for (final String word : words) {
+
+                ClickableSpan clickableSpan = new ClickableSpan() {
+                    @Override
+                    public void onClick(View textView) {
+                        speak(word);
+                        Random rnd = new Random();
+                        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                        textViewDesc.setHighlightColor(color);
+                    }
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        ds.setColor(Color.BLACK);
+                        ds.setUnderlineText(false);
+
+                    }
+
+                };
+                ss.setSpan(clickableSpan, i, i + word.length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                i = i + word.length() + 1;
+
+        }
+        textViewDesc.setText(ss);
+        textViewDesc.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+
+
 
         mEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,23 +179,7 @@ public class ChildActivity extends AppCompatActivity {
             }
         });
 
-        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status == TextToSpeech.SUCCESS) {
-                   Locale locSpanish = new Locale("spa", "ARG");
-                   int result = mTTS.setLanguage(locSpanish);
 
-                   if(result == TextToSpeech.LANG_MISSING_DATA
-                           || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                       Log.e("TTS", "Language not supported");
-                   }
-                }
-                else {
-                    Log.e("TTS", "Inizialization failed");
-                }
-            }
-        });
     }
 
     @Override
@@ -187,6 +209,16 @@ public class ChildActivity extends AppCompatActivity {
         mTTS.speak(descripcion, TextToSpeech.QUEUE_FLUSH, null);
     }
 
+    private void speak(String word) {
+        float speed = (float) mSpeed.getProgress() / 50;
+        if(speed < 0.1) speed = 0.1f;
+        float pitch = (float) mPitch.getProgress() / 50;
+        if(pitch < 0.1) pitch = 0.1f;
+        mTTS.setSpeechRate(speed);
+        mTTS.setPitch(pitch);
+        mTTS.speak(word, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
     @Override
     protected void onDestroy() {
         if(mTTS != null) {
@@ -196,6 +228,44 @@ public class ChildActivity extends AppCompatActivity {
 
         super.onDestroy();
     }
+
+    @Override
+    protected void onPause() {
+        if(mTTS != null) {
+            mTTS.stop();
+            mTTS.shutdown();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+            mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+                @Override
+                public void onInit(int status) {
+                    if(status == TextToSpeech.SUCCESS) {
+                        Locale locSpanish = new Locale("spa", "ARG");
+                        int result = mTTS.setLanguage(locSpanish);
+
+                        if(result == TextToSpeech.LANG_MISSING_DATA
+                                || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                            Log.e("TTS", "Language not supported");
+                        }
+                        if(getApplicationInfo().targetSdkVersion >= 21) {
+                            mTTS.getVoices();
+                            Voice voice = new Voice("es-es-x-ana#female_3-local", Locale.getDefault(), 1, 1, false, null);
+                            mTTS.setVoice(voice);
+                        }
+                    }
+                    else {
+                        Log.e("TTS", "Inizialization failed");
+                    }
+                }
+            });
+        super.onResume();
+    }
+
+
 
     private void saveTrabalenguas(ArrayList<Trabalengua> trab) {
         try {

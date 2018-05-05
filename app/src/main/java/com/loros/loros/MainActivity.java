@@ -1,51 +1,47 @@
-package loros.loros;
+package com.loros.loros;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Writer;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener, AddDialog.AddDialogListener {
+
+
+public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.OnItemClickListener, AddDialog.AddDialogListener, NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerViewAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -53,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private FloatingActionButton addButton;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private ActionMode actionMode;
+    private ListView mDrawerList;
+    private String[] drawerList;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
     private int MY_PERMISSIONS = 1;
     private final String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
@@ -60,7 +60,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.drawer_list_item);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         if(hasPermissions()) {
             fillTrabalenguasList();
         }
@@ -69,7 +72,20 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         }
 
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
+
+        };
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        mRecyclerView = findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         // specify an adapter (see also next example)
@@ -78,9 +94,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(MainActivity.this);
 
-        //ToDo Grisar botón si no se tienen los permisos necesarios
-        addButton = findViewById(R.id.fab_add);
 
+
+        //ToDo Grisar botón si no se tienen los permisos necesarios
+
+
+        addButton = findViewById(R.id.fab_add);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
 
     }
+
 
     @Override
     public void onResume() {
@@ -129,11 +149,29 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         return true;
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.classroom) {
+
+        }
+        else if(id == R.id.log_out) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     private class ActionModeCallback implements ActionMode.Callback {
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.action_menu, menu);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             return true;
         }
 
@@ -159,6 +197,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         public void onDestroyActionMode(ActionMode mode) {
             mAdapter.clearSelection();
             actionMode = null;
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
         }
     }
 
@@ -263,21 +303,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 saveTrabalenguas(trabalenguaList);
         }
 
-
-    private void copyFile(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1024];
-        int read;
-        while((read = in.read(buffer)) != -1){
-            out.write(buffer, 0, read);
-        }
-    }
-
     private void askForPermissions() {
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 && (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE))){
 
-            Toast.makeText(this, "LOS PERMISOS SON NECESARIOS", Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS);
         }
@@ -295,7 +325,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                 fillTrabalenguasList();
             }
             else {
-                Toast.makeText(this, "NECESITAS ACEPTAR LOS PERMISOS", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "NECESITAS ACEPTAR LOS PERMISOS", Toast.LENGTH_LONG).show();
+                addButton.setClickable(false);
             }
         }
         else{

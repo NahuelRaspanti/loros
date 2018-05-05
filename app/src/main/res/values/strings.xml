@@ -1,3 +1,45 @@
 <resources>
     <string name="app_name">LOROS</string>
+
+    <string name="action_sign_in_short">REGISTRARSE</string>
+    <string name="email">EMAIL</string>
+    <string name="minimum_password">CONTRASEÑA MUY CORTA, INGRESÁ UN MINIMO DE 6 CARACTERES</string>
+    <string name="auth_failed">ERROR, VERIFICÁ TU EMAIL Y CONTRASEÑA O REGISTRATE</string>
+    <string name="change_email">CAMBIAR EMAIL</string>
+    <string name="change_password">CAMBIAR CONTRASEÑA</string>
+    <string name="send_password_reset_email">Send Password reset email</string>
+    <string name="remove_user">REMOVER USUARIO</string>
+    <string name="new_pass">NUEVA CONTRASEÑA</string>
+    <string name="title_activity_profile">LOROS</string>
+    <string name="title_activity_login">INICIAR SESIÓN</string>
+    <string name="hint_email">EMAIL</string>
+    <string name="hint_password">CONTRASEÑA</string>
+    <string name="btn_login">INICIAR SESIÓN</string>
+    <string name="btn_link_to_register">NO SOS MIEMBRO? REGISTRATE EN LOROS AHORA!</string>
+    <string name="btn_link_to_login">YA ESTOY REGISTRADO! INICIÁ SESIÓN</string>
+    <string name="title_activity_reset_password">CAMBIAR CONTRASEÑA</string>
+    <string name="btn_forgot_password">OLVIDASTE TU CONTRASEÑA?</string>
+    <string name="btn_reset_password">RESETEAR CONTRASEÑA</string>
+    <string name="btn_back"><![CDATA[<< ATRAS]]></string>
+    <string name="hint_new_email">NUEVO EMAIL</string>
+    <string name="btn_change">CAMBIAR</string>
+    <string name="btn_send">ENVIAR</string>
+    <string name="btn_remove">Remove</string>
+    <string name="btn_sign_out">CERRAR SESIÓN</string>
+    <string name="lbl_forgot_password">OLIVDASTE TU CONTRASEÑA?</string>
+    <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
+    <string name="hint_name">NOMBRE</string>
+    <string-array name="drawer_array">
+        <item>CERRAR SESIÓN</item>
+        <item>PRUEBA</item>
+        <item>ALGO</item>
+        <item>FUNCIONA</item>
+    </string-array>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+
+
 </resources>

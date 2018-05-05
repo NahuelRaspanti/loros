@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "984551445214",
+    "firebase_url": "https://loros-4af67.firebaseio.com",
+    "project_id": "loros-4af67",
+    "storage_bucket": "loros-4af67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984551445214:android:73673e8843c748ea",
+        "android_client_info": {
+          "package_name": "com.loros.loros"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984551445214-h4v06qp5fa01m2t4keost7otvc29l29j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.loros.loros",
+            "certificate_hash": "ad983900affcd3aeaaac870d2e6183dd8d76760f"
+          }
+        },
+        {
+          "client_id": "984551445214-7t69pmks0iuvv8i6qub1fbeaog6748j1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb0vrtXNEqY0WzgBfHBFumva8k80S0zck"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "984551445214-7t69pmks0iuvv8i6qub1fbeaog6748j1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

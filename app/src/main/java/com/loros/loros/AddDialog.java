@@ -1,4 +1,4 @@
-package loros.loros;
+package com.loros.loros;
 
 import android.app.Activity;
 import android.app.AlertDialog;
