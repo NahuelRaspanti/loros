@@ -3,6 +3,7 @@ package com.loros.loros;
 import android.content.Context;
 import android.os.Environment;
 
+import com.google.firebase.database.Exclude;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -19,11 +20,14 @@ public class Trabalengua {
 
     public String title;
     public String description;
+    @Exclude
     public boolean active;
 
     public Trabalengua(String _title) {
         title = _title;
     }
+
+    public Trabalengua() {}
 
     public  Trabalengua(String _title, String _description) {
         title = _title;
@@ -44,6 +48,7 @@ public class Trabalengua {
         return description;
     }
 
+    @Exclude
     public boolean isActive() {return active;}
 
     public static ArrayList<Trabalengua> getTrabalenguasFromFile(String filename, Context context){

@@ -65,7 +65,7 @@ public class SignUpActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                String email = inputEmail.getText().toString().trim();
+                final String email = inputEmail.getText().toString().trim();
                 final String name = inputName.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
@@ -110,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity{
                                             Toast.LENGTH_SHORT).show();
                                 } else {
                                     DatabaseReference usersRef = database.child("users/" + auth.getUid());
-                                    usersRef.setValue(new User(name, "student"));
+                                    usersRef.setValue(new User(name, "student", email));
                                     startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                                     finish();
                                 }

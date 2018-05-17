@@ -23,6 +23,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -44,6 +50,13 @@ public class ChildActivity extends AppCompatActivity {
     private Button mEdit;
     private Button mSave;
     private static boolean ACTIVE = false;
+    private boolean isOnline;
+    private String key;
+    private  String trabKey;
+    private ArrayList<Trabalengua> trabalenguaList;
+    final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+    final String currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private User user;
     String descripcion;
 
     @Override
@@ -52,13 +65,26 @@ public class ChildActivity extends AppCompatActivity {
         setContentView(R.layout.activity_child);
 
         Intent intent = getIntent();
-
+        getUser();
         final String titulo = intent.getStringExtra("Titulo");
         descripcion = intent.getStringExtra("Descripcion");
-        trabalenguas = getIntent().getStringExtra("List");
-        final ArrayList<Trabalengua> trabalenguaList = new Gson().fromJson(trabalenguas, new TypeToken<ArrayList<Trabalengua>>(){}.getType());
-        position = getIntent().getIntExtra("Position", 0);
 
+        isOnline = intent.getBooleanExtra("Online", false);
+        mEdit = findViewById(R.id.edit_button);
+        mSave = findViewById(R.id.save_button);
+
+        if(!isOnline) {
+            trabalenguas = getIntent().getStringExtra("List");
+            trabalenguaList = new Gson().fromJson(trabalenguas, new TypeToken<ArrayList<Trabalengua>>() {
+            }.getType());
+            position = getIntent().getIntExtra("Position", 0);
+            mEdit.setVisibility(View.VISIBLE);
+            mSave.setVisibility(View.VISIBLE);
+        }
+        else {
+            key = intent.getStringExtra("Key");
+            trabKey = intent.getStringExtra("TrabKey");
+        }
 
         final TextView textViewTitle = findViewById(R.id.my_title);
         final TextView textViewDesc = findViewById(R.id.my_trabalengua);
@@ -68,9 +94,6 @@ public class ChildActivity extends AppCompatActivity {
         mSpeed = findViewById(R.id.trab_speed);
         mPitch = findViewById(R.id.trab_pitch);
 
-
-        mEdit = findViewById(R.id.edit_button);
-        mSave = findViewById(R.id.save_button);
         mEdit.setText("EDITAR");
         textViewTitle.setText(titulo);
         textViewDesc.setText(descripcion.toUpperCase());
@@ -162,8 +185,13 @@ public class ChildActivity extends AppCompatActivity {
                 String editedDesc = mEditableTextDesc.getText().toString();
                 String editedTitle = mEditableTextTitle.getText().toString();
 
-                trabalenguaList.set(position, new Trabalengua(editedTitle, editedDesc));
-                saveTrabalenguas(trabalenguaList);
+                if(!isOnline) {
+                    trabalenguaList.set(position, new Trabalengua(editedTitle, editedDesc));
+                    saveTrabalenguas(trabalenguaList);
+                }
+                else {
+                    saveTrabalenguasOnline(new Trabalengua(editedTitle, editedDesc));
+                }
 
                 textViewTitle.setText(editedTitle.toUpperCase());
                 textViewDesc.setText(editedDesc.toUpperCase());
@@ -173,6 +201,8 @@ public class ChildActivity extends AppCompatActivity {
 
                 mEditableTextDesc.setVisibility(View.GONE);
                 textViewDesc.setVisibility(View.VISIBLE);
+
+                descripcion = editedDesc;
 
                 Toast.makeText(ChildActivity.this, "TRABALENGUAS GUARDADO!", Toast.LENGTH_SHORT).show();
                 ACTIVE = false;
@@ -281,6 +311,26 @@ public class ChildActivity extends AppCompatActivity {
         catch (Exception e) {
             Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void saveTrabalenguasOnline(Trabalengua trab) {
+        DatabaseReference ref = database.child("classroom").child(key).child("trabalenguas");
+        ref.child(trabKey).setValue(trab);
+    }
+
+    private void getUser() {
+        DatabaseReference ref = database.child("users/" + currentUserUID);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

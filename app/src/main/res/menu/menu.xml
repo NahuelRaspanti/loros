@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:theme="@style/ThemeOverlay.AppCompat.Light">
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="MoreOps"
+        android:icon="@drawable/ic_more"
+        app:showAsAction="always" >
+
+        <menu>
+
+            <item
+                android:id="@+id/log_out_main"
+                android:title="CERRAR SESIÓN" />
+
+        </menu>
+    </item>
+
+</menu>

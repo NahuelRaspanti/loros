@@ -21,16 +21,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<Trabalengua> mTrabalenguaList;
     private SparseBooleanArray selectedItems;
     private Context mContext;
-    private OnItemClickListener mListener;
+    private OnTrabalenguasClickListener mListener;
     private static final int TYPE_INACTIVE = 0;
     private static final int TYPE_ACTIVE = 1;
 
-    public interface OnItemClickListener {
+    public interface OnTrabalenguasClickListener {
         void onItemClick(int position);
         boolean onLongItemClick(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(OnTrabalenguasClickListener listener) {
         mListener = listener;
     }
 
@@ -40,10 +40,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
+        public TextView mDescView;
         public View mView;
         public ViewHolder(View itemView) {
             super(itemView);
             mTextView = (TextView) itemView.findViewById(R.id.my_text_view);
+            mDescView = itemView.findViewById(R.id.trab_text);
             mView = (View) itemView.findViewById(R.id.selected_overlay);
 
             itemView.setOnClickListener(new View.OnClickListener(){
@@ -97,7 +99,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         Trabalengua currentItem = mTrabalenguaList.get(position);
         String titulo = currentItem.title;
+        String desc = currentItem.description;
         holder.mTextView.setText(titulo);
+        holder.mDescView.setText(desc);
         final ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
         holder.mView.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
 

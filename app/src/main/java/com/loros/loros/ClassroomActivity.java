@@ -1,38 +1,47 @@
 package com.loros.loros;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
-import com.google.firebase.auth.FirebaseAuth;
+import java.util.ArrayList;
 
+public class ClassroomActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity{
-
-
+    public ArrayList<Trabalengua> mTrabalenguasList;
+    private Fragment trabFrag = new TrabalenguasClassFragment();
+    private Fragment memberFrag = new MembersFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar mToolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(mToolbar);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("MIS TRABALENGUAS"));
-        tabLayout.addTab(tabLayout.newTab().setText("CLASES"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("ClassName");
+        mToolbar.setTitle(title.toUpperCase());
+        Bundle bundle = new Bundle();
+        bundle.putString("key", intent.getStringExtra("Key"));
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("TRABALENGUAS"));
+        tabLayout.addTab(tabLayout.newTab().setText("MIEMBROS"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
-        adapter.addFragment(new TrabalenguasFragment(), "Frag1");
-        adapter.addFragment(new ClassroomFragment(), "Frag2");
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        adapter.addFragment(trabFrag, "Class1Frag");
+        adapter.addFragment(memberFrag, "Class2Frag");
+
+        trabFrag.setArguments(bundle);
+        memberFrag.setArguments(bundle);
+
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -51,24 +60,6 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.log_out_main:
-                FirebaseAuth.getInstance().signOut();
-                finish();
-                return true;
-            default: return super.onOptionsItemSelected(item);
-        }
     }
 
 }
