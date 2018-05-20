@@ -40,7 +40,6 @@ public class TrabalenguasClassFragment extends Fragment implements RecyclerViewA
         mTrabalenguasList = new ArrayList<>();
         Bundle bundle = this.getArguments();
         key = bundle.getString("key");
-        getTrabalenguasFromDB();
         mRecyclerView = view.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -77,9 +76,14 @@ public class TrabalenguasClassFragment extends Fragment implements RecyclerViewA
                 openDialog();
             }
         });
+        getTrabalenguasFromDB();
     }
 
     public void getTrabalenguasFromDB() {
+        if(mTrabalenguasList != null) {
+            mTrabalenguasList.clear();
+            mAdapter.notifyDataSetChanged();
+        }
         DatabaseReference ref = database.child("classroom").child(key);
         ref.child("trabalenguas").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
