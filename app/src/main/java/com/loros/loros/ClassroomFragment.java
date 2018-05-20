@@ -31,7 +31,6 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
     private ArrayList<Classroom> mClassroomList;
     private ClassroomAdapter mAdapter;
     private RecyclerView mRecyclerView;
-    private FloatingActionButton addButton;
     private ProgressBar progressBar;
     final private ArrayList<String> classroomKeys = new ArrayList<>();
     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -56,22 +55,14 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
 
-
-        //ToDo Grisar botón si no se tienen los permisos necesarios
-        addButton = view.findViewById(R.id.fab_add);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog();
-            }
-        });
         DatabaseReference ref = database.child("users/" + currentUserUID);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
                 if(!user.role.equals("teacher")) {
-                    addButton.setVisibility(View.GONE);
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.addButton.setVisibility(View.GONE);
                 }
             }
 
@@ -83,6 +74,32 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
 
 
         return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean visible)
+    {
+        super.setUserVisibleHint(visible);
+        if (visible && isResumed())
+        {
+            onResume();
+        }
+    }
+
+    @Override
+    public void onResume () {
+        super.onResume();
+        if (!getUserVisibleHint())
+        {
+            return;
+        }
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+        });
     }
 
     public void openDialog() {

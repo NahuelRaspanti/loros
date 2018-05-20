@@ -30,13 +30,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 public class TrabalenguasFragment extends Fragment implements RecyclerViewAdapter.OnTrabalenguasClickListener, AddDialog.NoticeDialogListener {
 
     private RecyclerViewAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private ArrayList<Trabalengua> mTrabalengua = new ArrayList<>();
-    private FloatingActionButton addButton;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private ActionMode actionMode;
     private int MY_PERMISSIONS = 1;
@@ -64,26 +64,28 @@ public class TrabalenguasFragment extends Fragment implements RecyclerViewAdapte
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
 
-        //ToDo Grisar botón si no se tienen los permisos necesarios
-        addButton = view.findViewById(R.id.fab_add);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog();
-            }
-        });
-
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                MainActivity mainActivity = (MainActivity) getActivity();
                 if (dy > 0)
-                    addButton.hide();
+                    mainActivity.addButton.hide();
                 else if (dy < 0)
-                    addButton.show();
+                    mainActivity.addButton.show();
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean visible)
+    {
+        super.setUserVisibleHint(visible);
+        if (visible && isResumed())
+        {
+            onResume();
+        }
     }
 
     @Override
@@ -94,6 +96,17 @@ public class TrabalenguasFragment extends Fragment implements RecyclerViewAdapte
             fillTrabalenguasList();
             mAdapter.notifyDataSetChanged();
         }
+        if (!getUserVisibleHint())
+        {
+            return;
+        }
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -282,7 +295,8 @@ public class TrabalenguasFragment extends Fragment implements RecyclerViewAdapte
                 fillTrabalenguasList();
             } else {
                 Toast.makeText(getActivity(), "NECESITAS ACEPTAR LOS PERMISOS", Toast.LENGTH_LONG).show();
-                addButton.setClickable(false);
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.addButton.setClickable(false);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);

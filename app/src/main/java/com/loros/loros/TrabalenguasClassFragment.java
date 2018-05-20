@@ -29,7 +29,6 @@ public class TrabalenguasClassFragment extends Fragment implements RecyclerViewA
     private ArrayList<String> trabKey = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mAdapter;
-    private FloatingActionButton addButton;
     private User user;
     private final boolean FRAGMENT_CLASS = true;
 
@@ -51,15 +50,33 @@ public class TrabalenguasClassFragment extends Fragment implements RecyclerViewA
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
 
-        addButton = view.findViewById(R.id.fab_add);
-        addButton.setOnClickListener(new View.OnClickListener() {
+        return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean visible)
+    {
+        super.setUserVisibleHint(visible);
+        if (visible && isResumed())
+        {
+            onResume();
+        }
+    }
+
+    @Override
+    public void onResume () {
+        super.onResume();
+        if (!getUserVisibleHint())
+        {
+            return;
+        }
+        ClassroomActivity mainActivity = (ClassroomActivity) getActivity();
+        mainActivity.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialog();
             }
         });
-
-        return view;
     }
 
     public void getTrabalenguasFromDB() {

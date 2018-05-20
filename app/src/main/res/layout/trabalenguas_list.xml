@@ -12,22 +12,26 @@
         android:orientation="vertical"
         android:background="?android:attr/selectableItemBackground"
         android:padding="8dp">
+
         <TextView
             android:id="@+id/my_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
+            android:fontFamily="@font/roboto_bold"
+            android:padding="8dp"
             android:textColor="@android:color/black"
-            android:padding="8dp"/>
+            android:textSize="24sp" />
+
         <TextView
             android:id="@+id/trab_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:padding="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto"
             android:maxLines="2"
-            android:ellipsize="end"/>
+            android:padding="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
     </LinearLayout>
     <View
         android:id="@+id/selected_overlay"

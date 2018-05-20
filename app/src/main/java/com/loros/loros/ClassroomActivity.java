@@ -2,6 +2,7 @@ package com.loros.loros;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -15,12 +16,14 @@ public class ClassroomActivity extends AppCompatActivity {
     public ArrayList<Trabalengua> mTrabalenguasList;
     private Fragment trabFrag = new TrabalenguasClassFragment();
     private Fragment memberFrag = new MembersFragment();
+    public FloatingActionButton addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar mToolbar = findViewById(R.id.my_toolbar);
+        addButton = findViewById(R.id.fab_add);
 
         Intent intent = getIntent();
         String title = intent.getStringExtra("ClassName");

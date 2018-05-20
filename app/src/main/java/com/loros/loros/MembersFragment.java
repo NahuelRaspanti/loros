@@ -26,7 +26,6 @@ public class MembersFragment extends Fragment implements MemberAdapter.onMemberC
     private ArrayList<User> mMemberList;
     private RecyclerView mRecyclerView;
     private MemberAdapter mAdapter;
-    private FloatingActionButton addButton;
     private String key;
     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
     final String currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -55,15 +54,33 @@ public class MembersFragment extends Fragment implements MemberAdapter.onMemberC
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
 
-        addButton = view.findViewById(R.id.fab_add);
-        addButton.setOnClickListener(new View.OnClickListener() {
+        return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean visible)
+    {
+        super.setUserVisibleHint(visible);
+        if (visible && isResumed())
+        {
+            onResume();
+        }
+    }
+
+    @Override
+    public void onResume () {
+        super.onResume();
+        if (!getUserVisibleHint())
+        {
+            return;
+        }
+        ClassroomActivity mainActivity = (ClassroomActivity) getActivity();
+        mainActivity.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialog();
             }
         });
-
-        return view;
     }
 
     private void openDialog() {

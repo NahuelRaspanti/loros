@@ -1,5 +1,7 @@
 package com.loros.loros;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity{
 
+    public FloatingActionButton addButton;
 
 
     @Override
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar mToolbar = findViewById(R.id.my_toolbar);
+        addButton = findViewById(R.id.fab_add);
         setSupportActionBar(mToolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("MIS TRABALENGUAS"));
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity{
         switch(item.getItemId()) {
             case R.id.log_out_main:
                 FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
                 return true;
             default: return super.onOptionsItemSelected(item);

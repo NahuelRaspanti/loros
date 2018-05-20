@@ -26,7 +26,9 @@
         android:background="?android:colorPrimary"
         android:minHeight="?android:actionBarSize"
         android:elevation="4dp"
-        app:tabTextColor="@color/white"
+        app:tabTextColor="@android:color/black"
+        app:tabSelectedTextColor="@color/white"
+        app:tabIndicatorColor="@color/white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <android.support.v4.view.ViewPager
@@ -36,6 +38,20 @@
         android:layout_below="@id/tab_layout"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_action_add"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.design.widget.CoordinatorLayout>
 

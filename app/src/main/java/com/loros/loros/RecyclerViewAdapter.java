@@ -98,8 +98,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         Trabalengua currentItem = mTrabalenguaList.get(position);
-        String titulo = currentItem.title;
-        String desc = currentItem.description;
+        String titulo = currentItem.title.toUpperCase();
+        String desc = currentItem.description.toUpperCase();
         holder.mTextView.setText(titulo);
         holder.mDescView.setText(desc);
         final ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
