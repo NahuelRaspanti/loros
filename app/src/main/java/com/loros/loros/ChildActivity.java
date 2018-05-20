@@ -95,7 +95,7 @@ public class ChildActivity extends AppCompatActivity {
         mPitch = findViewById(R.id.trab_pitch);
 
         mEdit.setText("EDITAR");
-        textViewTitle.setText(titulo);
+        textViewTitle.setText(titulo.toUpperCase());
         textViewDesc.setText(descripcion.toUpperCase());
 
         textViewTitle.setSelected(true);
