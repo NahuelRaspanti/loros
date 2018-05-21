@@ -20,7 +20,7 @@
             android:fontFamily="@font/roboto_bold"
             android:padding="8dp"
             android:textColor="@android:color/black"
-            android:textSize="24sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/trab_text"
@@ -31,7 +31,7 @@
             android:maxLines="2"
             android:padding="8dp"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
     </LinearLayout>
     <View
         android:id="@+id/selected_overlay"
