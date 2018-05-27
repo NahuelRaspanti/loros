@@ -29,6 +29,7 @@ import java.util.List;
 public class ClassroomFragment extends Fragment implements ClassroomAdapter.onClasroomClick, ClassroomDialog.NoticeDialogListener{
 
     private ArrayList<Classroom> mClassroomList;
+    private ArrayList<String> mNames;
     private ClassroomAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
@@ -148,14 +149,14 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
                         classroomKeys.add(key);
                     }
                 }
-                    for(LinkedHashMap.Entry<String, Boolean> entry : classroomIds.entrySet()) {
+                    for(final LinkedHashMap.Entry<String, Boolean> entry : classroomIds.entrySet()) {
                         final int progressBarCount = classroomIds.size();
                         refClassrooms.child(entry.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Classroom classroom = dataSnapshot.getValue(Classroom.class);
+                                getStudentNames(entry.getKey(), classroom);
                                 mClassroomList.add(classroom);
-                                mAdapter.notifyDataSetChanged();
                                 progressBar.setVisibility(View.GONE);
                             }
 
@@ -174,7 +175,39 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
 
             }
         });
-
-
     }
+
+    private void getStudentNames(String key, final Classroom classroom) {
+        DatabaseReference ref = database.child("classroom").child(key).child("students");
+        final ArrayList<String> names = new ArrayList<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot students: dataSnapshot.getChildren()) {
+                    String userKey = students.getKey();
+                    DatabaseReference userRef = database.child("users").child(userKey);
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            User user = dataSnapshot.getValue(User.class);
+                            names.add(user.name);
+                            classroom.setStudentNames(names);
+                            mAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

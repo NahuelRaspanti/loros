@@ -23,7 +23,7 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final int layout = R.layout.trabalenguas_list;
+        final int layout = R.layout.classroom_list;
         View v = LayoutInflater.from(mContext).inflate(layout, parent, false);
         return new ViewHolder(v);
     }
@@ -32,7 +32,9 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         Classroom currentItem = mClassroomList.get(position);
         String className = currentItem.getClass_name();
-        holder.mTextView.setText(className);
+        String studentNames = currentItem.getStudentNames().toString().replace("[", "").replace("]", "");
+        holder.mTextView.setText(className.toUpperCase());
+        holder.mStudentView.setText(studentNames.toUpperCase());
     }
 
     @Override
@@ -51,11 +53,11 @@ public class ClassroomAdapter extends RecyclerView.Adapter<ClassroomAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
-        public View mView;
+        public TextView mStudentView;
         public ViewHolder(View itemView) {
             super(itemView);
-            mTextView = (TextView) itemView.findViewById(R.id.my_text_view);
-            mView = (View) itemView.findViewById(R.id.selected_overlay);
+            mTextView = (TextView) itemView.findViewById(R.id.class_name);
+            mStudentView = itemView.findViewById(R.id.student_names);
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override

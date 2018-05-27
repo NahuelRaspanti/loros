@@ -1,5 +1,7 @@
 package com.loros.loros;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +9,8 @@ import java.util.Map;
 public class Classroom {
     public String owner;
     public String class_name;
+    @Exclude
+    public ArrayList<String> studentNames = new ArrayList<>();
     public Map<String, Boolean> students = new HashMap<>();
     public Map<String, Trabalengua> trabalenguas = new HashMap<>();
 
@@ -49,5 +53,14 @@ public class Classroom {
 
     public void setTrabalenguas(Map<String, Trabalengua> trabalenguas) {
         this.trabalenguas = trabalenguas;
+    }
+
+    @Exclude
+    public ArrayList<String> getStudentNames() {
+        return studentNames;
+    }
+
+    public void setStudentNames(ArrayList<String> studentNames) {
+        this.studentNames = studentNames;
     }
 }
