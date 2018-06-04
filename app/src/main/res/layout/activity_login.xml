@@ -25,8 +25,10 @@
             android:src="@mipmap/ic_launcher" />
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/email_text_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:errorEnabled="true">
 
             <EditText
                 android:id="@+id/email"
@@ -40,8 +42,10 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/password_text_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:errorEnabled="true">
 
             <EditText
                 android:id="@+id/password"

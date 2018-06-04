@@ -22,7 +22,7 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
 
     @Override
     public MemberAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final int layout = R.layout.trabalenguas_list;
+        final int layout = R.layout.member_list;
         View v = LayoutInflater.from(mContext).inflate(layout, parent, false);
         return new MemberAdapter.ViewHolder(v);
     }
@@ -30,8 +30,8 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     @Override
     public void onBindViewHolder(MemberAdapter.ViewHolder holder, int position) {
         User currentItem = mMemberList.get(position);
-        String className = currentItem.name;
-        holder.mTextView.setText(className);
+        String memberName = currentItem.name;
+        holder.mTextView.setText(memberName.toUpperCase());
     }
 
     @Override
@@ -50,11 +50,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
-        public View mView;
         public ViewHolder(View itemView) {
             super(itemView);
-            mTextView = (TextView) itemView.findViewById(R.id.my_text_view);
-            mView = (View) itemView.findViewById(R.id.selected_overlay);
+            mTextView = (TextView) itemView.findViewById(R.id.member_name);
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
