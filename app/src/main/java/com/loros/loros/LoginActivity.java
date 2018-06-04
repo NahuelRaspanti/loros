@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,13 +21,23 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnTextChanged;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
-    private TextInputLayout mEmail, mPassword;
+    @BindView (R.id.email) EditText inputEmail;
+    @BindView (R.id.password) EditText inputPassword;
+    @BindView(R.id.email_text_input) TextInputLayout mEmail;
+    @BindView (R.id.password_text_input) TextInputLayout mPassword;
+    @BindView (R.id.progressBar) ProgressBar progressBar;
+    @BindView (R.id.btn_signup) Button btnSignup ;
+    @BindView (R.id.btn_login) Button btnLogin;
+    @BindView (R.id.btn_reset_password) Button btnReset;
+
+
     private FirebaseAuth auth;
-    private ProgressBar progressBar;
-    private Button btnSignup, btnLogin, btnReset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // set the view now
         setContentView(R.layout.activity_login);
-
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        mEmail = findViewById(R.id.email_text_input);
-        mPassword = findViewById(R.id.password_text_input);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnSignup = (Button) findViewById(R.id.btn_signup);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        btnReset = (Button) findViewById(R.id.btn_reset_password);
+        ButterKnife.bind(this);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -62,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,13 +73,13 @@ public class LoginActivity extends AppCompatActivity {
                 final String password = inputPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
-                    inputEmail.setError("INGRESÁ UN EMAIL!");
+                    mEmail.setError("INGRESÁ UN EMAIL!");
                     //Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(password)) {
-                    inputPassword.setError("INGRESÁ CONTRASEÑA!");
+                    mPassword.setError("INGRESÁ CONTRASEÑA!");
                     //Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -107,5 +111,14 @@ public class LoginActivity extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    @OnTextChanged(value = R.id.email, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void resetEmailField(Editable e) {
+        mEmail.setError(null);
+    }
+    @OnTextChanged(value = R.id.password, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void resetPasswordField(Editable e) {
+        mPassword.setError(null);
     }
 }

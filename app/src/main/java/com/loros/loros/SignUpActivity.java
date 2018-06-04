@@ -3,8 +3,10 @@ package com.loros.loros;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -23,11 +25,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnTextChanged;
+
 public class SignUpActivity extends AppCompatActivity{
 
-    private EditText inputEmail, inputPassword,inputName;
-    private Button btnSignIn, btnSignUp, btnResetPassword;
-    private ProgressBar progressBar;
+    @BindView(R.id.email) EditText inputEmail;
+    @BindView(R.id.password) EditText inputPassword;
+    @BindView(R.id.name) EditText inputName;
+    @BindView(R.id.email_text_input) TextInputLayout mEmail;
+    @BindView(R.id.name_text_input) TextInputLayout mName;
+    @BindView (R.id.password_text_input) TextInputLayout mPassword;
+    @BindView(R.id.sign_in_button) Button btnSignIn;
+    @BindView(R.id.sign_up_button) Button btnSignUp;
+    @BindView(R.id.btn_reset_password) Button btnResetPassword;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
     private FirebaseAuth auth;
     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
@@ -43,15 +56,7 @@ public class SignUpActivity extends AppCompatActivity{
             startActivity(new Intent(SignUpActivity.this, MainActivity.class));
             finish();
         }
-
-        btnSignIn = (Button) findViewById(R.id.sign_in_button);
-        btnSignUp = (Button) findViewById(R.id.sign_up_button);
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputName = (EditText) findViewById(R.id.name);
-        inputPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
-
+        ButterKnife.bind(this);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,18 +75,21 @@ public class SignUpActivity extends AppCompatActivity{
                 String password = inputPassword.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "INGRESÁ UN EMAIL!", Toast.LENGTH_SHORT).show();
+                    mEmail.setError("INGRESÁ UN EMAIL!");
+                    //Toast.makeText(getApplicationContext(), "INGRESÁ UN EMAIL!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (TextUtils.isEmpty(name)) {
-                    Toast.makeText(getApplicationContext(), "INGRESÁ UN NOMBRE!", Toast.LENGTH_SHORT).show();
+                    mName.setError("INGRESÁ UN NOMBRE!");
+                    //Toast.makeText(getApplicationContext(), "INGRESÁ UN NOMBRE!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
 
                 if (TextUtils.isEmpty(password)) {
-                    Toast.makeText(getApplicationContext(), "INGRESÁ UNA CONTRASEÑA!", Toast.LENGTH_SHORT).show();
+                    mPassword.setError("INGRESÁ UNA CONTRASEÑA!");
+                    //Toast.makeText(getApplicationContext(), "INGRESÁ UNA CONTRASEÑA!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -127,6 +135,20 @@ public class SignUpActivity extends AppCompatActivity{
         progressBar.setVisibility(View.GONE);
     }
 
+    @OnTextChanged(value = R.id.email, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void resetEmailField(Editable e) {
+        mEmail.setError(null);
+    }
+
+    @OnTextChanged(value = R.id.name, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void resetNameField(Editable e) {
+        mName.setError(null);
+    }
+
+    @OnTextChanged(value = R.id.password, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void resetPasswordField(Editable e) {
+        mPassword.setError(null);
+    }
 
 
 
