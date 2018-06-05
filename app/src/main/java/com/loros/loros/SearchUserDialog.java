@@ -8,11 +8,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class SearchUserDialog extends DialogFragment {
 
-    private EditText title;
+    private EditText email;
     NoticeDialogListener mListener;
 
     public SearchUserDialog() {}
@@ -22,23 +23,50 @@ public class SearchUserDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.member_dialog, null);
+        email = view.findViewById(R.id.member_dialog_email);
         builder.setView(view)
                 .setTitle("AÑADIR ESTUDIANTE POR CORREO ELECTRÓNICO")
                 .setPositiveButton("AÑADIR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String trabTitle = title.getText().toString();
-                        sendBackData();
                     }
                 })
                 .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 });
-        title = view.findViewById(R.id.member_dialog_title);
         return builder.create();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        final AlertDialog d = (AlertDialog)getDialog();
+        if(d != null)
+        {
+            Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Boolean wantToCloseDialog = false;
+                    String inputEmail = email.getText().toString();
+                    if(inputEmail.isEmpty()) {
+                        email.setError("INGRESÁ UN EMAIL");
+                    }
+                    else {
+                        wantToCloseDialog = true;
+                    }
+                    if(wantToCloseDialog) {
+                        sendBackData();
+                        d.dismiss();
+                    }
+                }
+            });
+        }
     }
 
     public interface NoticeDialogListener {
@@ -47,7 +75,7 @@ public class SearchUserDialog extends DialogFragment {
 
     public void sendBackData() {
         mListener = (NoticeDialogListener) getTargetFragment();
-        mListener.onDialogPositiveClick(title.getText().toString());
+        mListener.onDialogPositiveClick(email.getText().toString());
     }
 
 }

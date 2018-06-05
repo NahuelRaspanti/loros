@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class ClassroomDialog extends DialogFragment {
@@ -27,18 +28,45 @@ public class ClassroomDialog extends DialogFragment {
                 .setPositiveButton("CREAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String trabTitle = title.getText().toString();
-                        sendBackData();
                     }
                 })
                 .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 });
         title = view.findViewById(R.id.classroom_diag_title);
         return builder.create();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        final AlertDialog d = (AlertDialog)getDialog();
+        if(d != null)
+        {
+            Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Boolean wantToCloseDialog = false;
+                    String trabTitle = title.getText().toString();
+                    if(trabTitle.isEmpty()) {
+                        title.setError("EL NOMBRE NO PUEDE ESTAR VACÍO");
+                    }
+                    else {
+                        wantToCloseDialog = true;
+                    }
+                    if(wantToCloseDialog) {
+                        sendBackData();
+                        d.dismiss();
+                    }
+                }
+            });
+        }
     }
 
     public interface NoticeDialogListener {

@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +30,7 @@ public class MembersFragment extends Fragment implements MemberAdapter.onMemberC
     private MemberAdapter mAdapter;
     private String key;
     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-    final String currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
     public MembersFragment() {}
@@ -102,11 +104,16 @@ public class MembersFragment extends Fragment implements MemberAdapter.onMemberC
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot users : dataSnapshot.getChildren()) {
                     User user = users.getValue(User.class);
-                    if(user.email.equals(email)) {
+                    if(currentUser.getEmail().equals(email.toLowerCase())) {
+                        Toast.makeText(getActivity(), "NO PUEDES AÑADIRTE A TU PROPIA CLASE", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if(user.email.equals(email.toLowerCase())) {
                         database.child("users").child(users.getKey()).child("classroom").child(key).setValue(true);
                         database.child("classroom").child(key).child("students").child(users.getKey()).setValue(true);
                         mMemberList.add(user);
                         mAdapter.notifyDataSetChanged();
+                        return;
                     }
                 }
             }
