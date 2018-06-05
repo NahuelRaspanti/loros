@@ -1,6 +1,7 @@
 package com.loros.loros;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -21,6 +23,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 public class MainActivity extends AppCompatActivity{
 
     public FloatingActionButton addButton;
+    FirebaseAuth.AuthStateListener mAuthListener;
     private static final String TAG = "MainActivity";
 
 
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity{
         Toolbar mToolbar = findViewById(R.id.my_toolbar);
         addButton = findViewById(R.id.fab_add);
         initFCM();
+        FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
         setSupportActionBar(mToolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("MIS TRABALENGUAS"));
@@ -82,14 +86,24 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void sendRegistrationToServer(String token) {
+    private void sendRegistrationToServer(final String token) {
         Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        reference
-                .child("users")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("token")
-                .setValue(token);
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null) {
+                    Log.i("Token","Entre a hacer el token, usuario no nulo");
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                    reference
+                            .child("users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("token")
+                            .setValue(token);
+                }
+            }
+        };
+
     }
 
 

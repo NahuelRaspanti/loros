@@ -101,6 +101,7 @@ public class TrabalenguasFragment extends Fragment implements RecyclerViewAdapte
             return;
         }
         MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.addButton.setVisibility(View.VISIBLE);
         mainActivity.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -61,10 +61,6 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
-                if(!user.role.equals("teacher")) {
-                    MainActivity mainActivity = (MainActivity) getActivity();
-                    mainActivity.addButton.setVisibility(View.GONE);
-                }
             }
 
             @Override
@@ -95,6 +91,13 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
             return;
         }
         MainActivity mainActivity = (MainActivity) getActivity();
+        if(user.role.equals("teacher")) {
+            mainActivity.addButton.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mainActivity.addButton.setVisibility(View.GONE);
+        }
         mainActivity.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -8,6 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -17,6 +25,8 @@ public class ClassroomActivity extends AppCompatActivity {
     private Fragment trabFrag = new TrabalenguasClassFragment();
     private Fragment memberFrag = new MembersFragment();
     public FloatingActionButton addButton;
+    final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+    final String currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +34,22 @@ public class ClassroomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar mToolbar = findViewById(R.id.my_toolbar);
         addButton = findViewById(R.id.fab_add);
+
+        DatabaseReference ref = database.child("users/" + currentUserUID);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if(!user.role.equals("teacher")) {
+                    addButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         Intent intent = getIntent();
         String title = intent.getStringExtra("ClassName");

@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
     @BindView (R.id.btn_login) Button btnLogin;
     @BindView (R.id.btn_reset_password) Button btnReset;
 
-
     private FirebaseAuth auth;
 
     @Override
