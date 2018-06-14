@@ -1,5 +1,7 @@
 package com.loros.loros;
 
+import android.annotation.TargetApi;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -7,6 +9,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -45,13 +48,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "onMessageReceived: notification body: " + notificationBody);
         Log.d(TAG, "onMessageReceived: notification title: " + notificationTitle);
 
-
-        String dataType = remoteMessage.getData().get("direct_message");
-        if(dataType.equals("direct_message")){
             Log.d(TAG, "onMessageReceived: new incoming message.");
-            String title = remoteMessage.getData().get("data_title");
-            sendMessageNotification(title);
-        }
+            sendMessageNotification(notificationTitle);
     }
 
     /**
@@ -64,7 +62,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //get the notification id
 
         // Instantiate a Builder object.
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "com.com.loros.default_notification");
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "Trabalenguas");
         // Creates an Intent for the Activity
         Intent pendingIntent = new Intent(this, MainActivity.class);
         // Sets the Activity to start in a new, empty task
@@ -79,16 +77,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 );
 
         //add properties to the builder
-        builder.setSmallIcon(R.drawable.ic_notification_green)
+        builder.setSmallIcon(R.drawable.ic_notification)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentTitle(title)
-                .setColor(Color.GREEN)
-                .setAutoCancel(true)
-                .setOnlyAlertOnce(true);
+                .setColor(Color.GREEN);
 
         builder.setContentIntent(notifyPendingIntent);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) createChannel(mNotificationManager);
 
         mNotificationManager.notify(1, builder.build());
 
@@ -105,6 +102,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "buildNotificationId: id: " + id);
         Log.d(TAG, "buildNotificationId: notification id:" + notificationId);
         return notificationId;
+    }
+
+    @TargetApi(26)
+    private void createChannel(NotificationManager notificationManager) {
+        String name = "Trabalenguas";
+        String description = "Notificaciones para trabalenguas nuevos";
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+
+        NotificationChannel mChannel = new NotificationChannel(name, name, importance);
+        mChannel.setDescription(description);
+        mChannel.enableLights(true);
+        mChannel.setLightColor(Color.GREEN);
+        notificationManager.createNotificationChannel(mChannel);
     }
 
 }
