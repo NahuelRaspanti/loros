@@ -1,5 +1,6 @@
 package com.loros.loros;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -48,6 +49,7 @@ public class TrabalenguasClassFragment extends Fragment implements RecyclerViewA
         mAdapter = new RecyclerViewAdapter(getActivity(), mTrabalenguasList);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
+        getTrabalenguasFromDB();
 
         return view;
     }
@@ -76,7 +78,23 @@ public class TrabalenguasClassFragment extends Fragment implements RecyclerViewA
                 openDialog();
             }
         });
-        getTrabalenguasFromDB();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                boolean result =data.getBooleanExtra("result", true);
+                if(result) {
+                    getTrabalenguasFromDB();
+                }
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 
     public void getTrabalenguasFromDB() {
@@ -92,6 +110,8 @@ public class TrabalenguasClassFragment extends Fragment implements RecyclerViewA
                     trabKey.add(trabalenguasSnapshot.getKey());
                     mTrabalenguasList.add(trabalenguasSnapshot.getValue(Trabalengua.class));
                     mAdapter.notifyDataSetChanged();
+                    mRecyclerView.scheduleLayoutAnimation();
+                    mRecyclerView.invalidate();
                 }
             }
 
@@ -119,7 +139,7 @@ public class TrabalenguasClassFragment extends Fragment implements RecyclerViewA
         detailIntent.putExtra("Titulo", clickedItem.getTitle());
         detailIntent.putExtra("Descripcion", clickedItem.getDescription());
 
-        startActivity(detailIntent);
+        startActivityForResult(detailIntent, 1);
     }
 
     @Override

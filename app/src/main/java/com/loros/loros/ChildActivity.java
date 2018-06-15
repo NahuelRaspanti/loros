@@ -49,6 +49,7 @@ public class ChildActivity extends AppCompatActivity {
     private int position;
     private Button mEdit;
     private Button mSave;
+    private Intent resultIntent;
     private static boolean ACTIVE = false;
     private boolean isOnline;
     private String key;
@@ -191,6 +192,8 @@ public class ChildActivity extends AppCompatActivity {
                 }
                 else {
                     saveTrabalenguasOnline(new Trabalengua(editedTitle, editedDesc));
+                    resultIntent = new Intent();
+                    resultIntent.putExtra("result", true);
                 }
 
                 textViewTitle.setText(editedTitle.toUpperCase());
@@ -210,6 +213,12 @@ public class ChildActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK, resultIntent);
+        super.onBackPressed();
     }
 
     @Override
