@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,7 @@ public class MembersFragment extends Fragment implements MemberAdapter.onMemberC
     private ProgressBar progressBar;
     private ArrayList<User> mMemberList;
     private RecyclerView mRecyclerView;
+    private TextView mEmptyRecycler;
     private MemberAdapter mAdapter;
     private String key;
     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -46,9 +48,12 @@ public class MembersFragment extends Fragment implements MemberAdapter.onMemberC
         Bundle bundle = this.getArguments();
         key = bundle.getString("key");
 
+        mRecyclerView = view.findViewById(R.id.my_recycler_view);
+        mEmptyRecycler = view.findViewById(R.id.empty_recylcer);
+        mEmptyRecycler.setText(R.string.empty_members);
+
         getMembers();
 
-        mRecyclerView = view.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // specify an adapter (see also next example)
@@ -132,7 +137,14 @@ public class MembersFragment extends Fragment implements MemberAdapter.onMemberC
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null) {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mEmptyRecycler.setVisibility(View.VISIBLE);
+                    return;
+                }
                 for(DataSnapshot students: dataSnapshot.getChildren()) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mEmptyRecycler.setVisibility(View.GONE);
                     String userKey = students.getKey();
                     DatabaseReference userRef = database.child("users").child(userKey);
                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
