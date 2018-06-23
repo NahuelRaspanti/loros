@@ -58,6 +58,13 @@ public class SignUpActivity extends AppCompatActivity{
         }
         ButterKnife.bind(this);
 
+        btnResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignUpActivity.this, RecoverPasswordActivity.class));
+            }
+        });
+
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -19,7 +19,7 @@
     <string name="btn_link_to_login">YA ESTOY REGISTRADO! INICIÁ SESIÓN</string>
     <string name="title_activity_reset_password">CAMBIAR CONTRASEÑA</string>
     <string name="btn_forgot_password">OLVIDASTE TU CONTRASEÑA?</string>
-    <string name="btn_reset_password">RESETEAR CONTRASEÑA</string>
+    <string name="btn_reset_password">REESTABLECER CONTRASEÑA</string>
     <string name="btn_back"><![CDATA[<< ATRAS]]></string>
     <string name="hint_new_email">NUEVO EMAIL</string>
     <string name="btn_change">CAMBIAR</string>
@@ -27,7 +27,7 @@
     <string name="btn_remove">Remove</string>
     <string name="btn_sign_out">CERRAR SESIÓN</string>
     <string name="lbl_forgot_password">OLIVDASTE TU CONTRASEÑA?</string>
-    <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
+    <string name="forgot_password_msg">SOLO NECESITAMOS TU EMAIL PARA ENVIARTE LAS INSTRUCCIONES.</string>
     <string name="hint_name">NOMBRE</string>
     <string-array name="drawer_array">
         <item>CERRAR SESIÓN</item>

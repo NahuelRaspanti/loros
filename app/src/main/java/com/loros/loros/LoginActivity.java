@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView (R.id.progressBar) ProgressBar progressBar;
     @BindView (R.id.btn_signup) Button btnSignup ;
     @BindView (R.id.btn_login) Button btnLogin;
-    @BindView (R.id.btn_reset_password) Button btnReset;
+    @BindView (R.id.btn_reset_password) Button btnResetPassword;
 
     private FirebaseAuth auth;
 
@@ -56,6 +56,13 @@ public class LoginActivity extends AppCompatActivity {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
+
+        btnResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, RecoverPasswordActivity.class));
+            }
+        });
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
