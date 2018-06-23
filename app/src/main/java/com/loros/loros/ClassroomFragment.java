@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +25,7 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
 
     private ArrayList<Classroom> mClassroomList;
     private ArrayList<String> mNames;
+    private TextView mEmptyRecycler;
     private ClassroomAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
@@ -40,8 +42,11 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
 
         progressBar = view.findViewById(R.id.progressBar);
         mClassroomList = new ArrayList<>();
-        initializeClassroomList();
         mRecyclerView = view.findViewById(R.id.my_recycler_view);
+        mEmptyRecycler = view.findViewById(R.id.empty_recylcer);
+        mEmptyRecycler.setText(R.string.empty_classroom);
+        initializeClassroomList();
+
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // specify an adapter (see also next example)
@@ -137,6 +142,13 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
         refUsers.child("classroom").orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null){
+                    mRecyclerView.setVisibility(View.GONE);
+                    mEmptyRecycler.setVisibility(View.VISIBLE);
+                    return;
+                }
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mEmptyRecycler.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 for (DataSnapshot classroomSnapshot: dataSnapshot.getChildren()) {
                     String key = classroomSnapshot.getKey();

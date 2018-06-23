@@ -29,6 +29,7 @@
     <string name="lbl_forgot_password">OLIVDASTE TU CONTRASEÑA?</string>
     <string name="forgot_password_msg">SOLO NECESITAMOS TU EMAIL PARA ENVIARTE LAS INSTRUCCIONES.</string>
     <string name="hint_name">NOMBRE</string>
+    <string name="empty_classroom">NO ESTAS PARTICIPANDO EN NINGUNA CLASE</string>
     <string-array name="drawer_array">
         <item>CERRAR SESIÓN</item>
         <item>PRUEBA</item>
