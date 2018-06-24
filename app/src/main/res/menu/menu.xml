@@ -14,6 +14,9 @@
         <menu>
 
             <item
+                android:id="@+id/lema"
+                android:title="LEMA"/>
+            <item
                 android:id="@+id/log_out_main"
                 android:title="CERRAR SESIÓN" />
 

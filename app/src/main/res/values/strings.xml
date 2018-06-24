@@ -31,6 +31,7 @@
     <string name="hint_name">NOMBRE</string>
     <string name="empty_classroom">NO ESTAS PARTICIPANDO EN NINGUNA CLASE</string>
     <string name="empty_members">NO HAY ESTUDIANTES EN ESTA CLASE</string>
+    <string name="lema">POR MIL PALABRAS\nY CERO MIEDOS\nPOR MAS CONFIANZA\nY MAS, YO PUEDO\nSIEMPRE ADELANTE\nLOROS PAR-LAN-TES</string>
     <string-array name="drawer_array">
         <item>CERRAR SESIÓN</item>
         <item>PRUEBA</item>
