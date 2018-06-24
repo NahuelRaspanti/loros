@@ -33,6 +33,10 @@ public class ClassroomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar mToolbar = findViewById(R.id.my_toolbar);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         addButton = findViewById(R.id.fab_add);
 
         DatabaseReference ref = database.child("users/" + currentUserUID);
@@ -89,6 +93,12 @@ public class ClassroomActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

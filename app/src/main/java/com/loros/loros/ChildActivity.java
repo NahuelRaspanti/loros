@@ -7,6 +7,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -64,6 +65,12 @@ public class ChildActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child);
+
+        Toolbar mToolbar = findViewById(R.id.my_toolbar);
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent = getIntent();
         getUser();
@@ -217,7 +224,13 @@ public class ChildActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        setResult(RESULT_OK, resultIntent);
+        if(isOnline) {
+            if (resultIntent == null) {
+                resultIntent = new Intent();
+                resultIntent.putExtra("result", false);
+            }
+            setResult(RESULT_OK, resultIntent);
+        }
         super.onBackPressed();
     }
 
@@ -342,5 +355,10 @@ public class ChildActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
 }

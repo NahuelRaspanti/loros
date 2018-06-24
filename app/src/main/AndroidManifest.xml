@@ -21,10 +21,17 @@
         </activity>
         <activity android:name=".LoginActivity"></activity>
         <activity
+            android:name=".LemaActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".ChildActivity"></activity>
+        <activity
+            android:name=".ChildActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity android:name=".RecoverPasswordActivity"></activity>
         <activity android:name=".ClassroomActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>

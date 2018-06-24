@@ -82,6 +82,9 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
                 return true;
+            case R.id.lema:
+                startActivity(new Intent(MainActivity.this, LemaActivity.class));
+                return true;
             default: return super.onOptionsItemSelected(item);
         }
     }
