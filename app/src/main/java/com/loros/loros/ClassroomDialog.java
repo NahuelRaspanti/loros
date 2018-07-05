@@ -53,7 +53,7 @@ public class ClassroomDialog extends DialogFragment {
                 public void onClick(View v)
                 {
                     Boolean wantToCloseDialog = false;
-                    String trabTitle = title.getText().toString();
+                    String trabTitle = title.getText().toString().trim();
                     if(trabTitle.isEmpty()) {
                         title.setError("EL NOMBRE NO PUEDE ESTAR VACÍO");
                     }

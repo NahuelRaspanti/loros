@@ -53,7 +53,7 @@ public class SearchUserDialog extends DialogFragment {
                 public void onClick(View v)
                 {
                     Boolean wantToCloseDialog = false;
-                    String inputEmail = email.getText().toString();
+                    String inputEmail = email.getText().toString().trim();
                     if(inputEmail.isEmpty()) {
                         email.setError("INGRESÁ UN EMAIL");
                     }

@@ -58,8 +58,8 @@ public class AddDialog extends DialogFragment {
                 public void onClick(View v)
                 {
                     Boolean wantToCloseDialog = false;
-                    String trabTitle = title.getText().toString();
-                    String trabDesc = desc.getText().toString();
+                    String trabTitle = title.getText().toString().trim();
+                    String trabDesc = desc.getText().toString().trim();
                     if(trabTitle.isEmpty()) {
                         title.setError("EL TÍTULO NO PUEDE ESTAR VACÍO");
                     }
