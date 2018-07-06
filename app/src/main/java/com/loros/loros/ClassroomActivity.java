@@ -57,7 +57,7 @@ public class ClassroomActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String title = intent.getStringExtra("ClassName");
-        mToolbar.setTitle(title.toUpperCase());
+        getSupportActionBar().setTitle(title.toUpperCase());
         Bundle bundle = new Bundle();
         bundle.putString("key", intent.getStringExtra("Key"));
 
