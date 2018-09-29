@@ -21,14 +21,18 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ClassroomFragment extends Fragment implements ClassroomAdapter.onClassroomClick, ClassroomDialog.NoticeDialogListener{
+
+    @BindView (R.id.progressBar) ProgressBar progressBar;
+    @BindView (R.id.my_recycler_view) RecyclerView mRecyclerView;
+    @BindView (R.id.empty_recylcer) TextView mEmptyRecycler;
 
     private ArrayList<Classroom> mClassroomList;
     private ArrayList<String> mNames;
-    private TextView mEmptyRecycler;
     private ClassroomAdapter mAdapter;
-    private RecyclerView mRecyclerView;
-    private ProgressBar progressBar;
     final private ArrayList<String> classroomKeys = new ArrayList<>();
     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
     final String currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -40,10 +44,8 @@ public class ClassroomFragment extends Fragment implements ClassroomAdapter.onCl
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.trabalenguas_fragment, null);
 
-        progressBar = view.findViewById(R.id.progressBar);
+        ButterKnife.bind(this, view);
         mClassroomList = new ArrayList<>();
-        mRecyclerView = view.findViewById(R.id.my_recycler_view);
-        mEmptyRecycler = view.findViewById(R.id.empty_recylcer);
         mEmptyRecycler.setText(R.string.empty_classroom);
         initializeClassroomList();
 

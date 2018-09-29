@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView (R.id.email) EditText inputEmail;
     @BindView (R.id.password) EditText inputPassword;
-    @BindView(R.id.email_text_input) TextInputLayout mEmail;
+    @BindView (R.id.email_text_input) TextInputLayout mEmail;
     @BindView (R.id.password_text_input) TextInputLayout mPassword;
     @BindView (R.id.progressBar) ProgressBar progressBar;
     @BindView (R.id.btn_signup) Button btnSignup ;

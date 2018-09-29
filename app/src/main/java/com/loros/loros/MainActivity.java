@@ -37,14 +37,14 @@ public class MainActivity extends AppCompatActivity{
         FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
         setSupportActionBar(mToolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("MIS TRABALENGUAS"));
+        tabLayout.addTab(tabLayout.newTab().setText("MIS TAREAS"));
         tabLayout.addTab(tabLayout.newTab().setText("CLASES"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
         final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
-        adapter.addFragment(new TrabalenguasFragment(), "Frag1");
+        adapter.addFragment(new MainTaskViewFragment(), "Frag1");
         adapter.addFragment(new ClassroomFragment(), "Frag2");
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(adapter);

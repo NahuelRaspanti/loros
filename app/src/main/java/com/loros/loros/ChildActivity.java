@@ -41,15 +41,25 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ChildActivity extends AppCompatActivity {
 
+
+    @BindView (R.id.my_toolbar) Toolbar mToolbar;
+    @BindView (R.id.edit_button) Button mEdit;
+    @BindView (R.id.save_button) Button mSave;
+    @BindView (R.id.my_title) TextView textViewTitle;
+    @BindView (R.id.my_trabalengua) TextView textViewDesc;
+    @BindView (R.id.my_title_edit) EditText mEditableTextTitle;
+    @BindView (R.id.my_trabalengua_edit) EditText mEditableTextDesc;
+    @BindView (R.id.trab_speed) SeekBar mSpeed;
+    @BindView (R.id.trab_pitch) SeekBar mPitch;
+
     private TextToSpeech mTTS;
-    private SeekBar mSpeed;
-    private SeekBar mPitch;
     private String trabalenguas;
     private int position;
-    private Button mEdit;
-    private Button mSave;
     private Intent resultIntent;
     private static boolean ACTIVE = false;
     private boolean isOnline;
@@ -66,7 +76,7 @@ public class ChildActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child);
 
-        Toolbar mToolbar = findViewById(R.id.my_toolbar);
+        ButterKnife.bind(this);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,8 +88,6 @@ public class ChildActivity extends AppCompatActivity {
         descripcion = intent.getStringExtra("Descripcion");
 
         isOnline = intent.getBooleanExtra("Online", false);
-        mEdit = findViewById(R.id.edit_button);
-        mSave = findViewById(R.id.save_button);
 
         if(!isOnline) {
             trabalenguas = getIntent().getStringExtra("List");
@@ -94,20 +102,11 @@ public class ChildActivity extends AppCompatActivity {
             trabKey = intent.getStringExtra("TrabKey");
         }
 
-        final TextView textViewTitle = findViewById(R.id.my_title);
-        final TextView textViewDesc = findViewById(R.id.my_trabalengua);
-        final EditText mEditableTextTitle = findViewById(R.id.my_title_edit);
-        final EditText mEditableTextDesc = findViewById(R.id.my_trabalengua_edit);
-
-        mSpeed = findViewById(R.id.trab_speed);
-        mPitch = findViewById(R.id.trab_pitch);
-
         mEdit.setText("EDITAR");
         textViewTitle.setText(titulo.toUpperCase());
         textViewDesc.setText(descripcion.toUpperCase());
 
         textViewTitle.setSelected(true);
-
 
         //Clickable words
         SpannableString ss = new SpannableString(descripcion.toUpperCase());
@@ -139,10 +138,6 @@ public class ChildActivity extends AppCompatActivity {
         }
         textViewDesc.setText(ss);
         textViewDesc.setMovementMethod(LinkMovementMethod.getInstance());
-
-
-
-
 
         mEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,7 +253,7 @@ public class ChildActivity extends AppCompatActivity {
         if(pitch < 0.1) pitch = 0.1f;
         mTTS.setSpeechRate(speed);
         mTTS.setPitch(pitch);
-        mTTS.speak(descripcion, TextToSpeech.QUEUE_FLUSH, null);
+        mTTS.speak(descripcion, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
     private void speak(String word) {
@@ -268,7 +263,7 @@ public class ChildActivity extends AppCompatActivity {
         if(pitch < 0.1) pitch = 0.1f;
         mTTS.setSpeechRate(speed);
         mTTS.setPitch(pitch);
-        mTTS.speak(word, TextToSpeech.QUEUE_FLUSH, null);
+        mTTS.speak(word, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
     @Override

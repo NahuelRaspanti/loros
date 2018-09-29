@@ -19,12 +19,18 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ClassroomActivity extends AppCompatActivity {
+
+    @BindView (R.id.my_toolbar) Toolbar mToolbar;
+    @BindView (R.id.fab_add) FloatingActionButton addButton;
+    @BindView (R.id.tab_layout) TabLayout tabLayout;
 
     public ArrayList<Trabalengua> mTrabalenguasList;
     private Fragment trabFrag = new TrabalenguasClassFragment();
     private Fragment memberFrag = new MembersFragment();
-    public FloatingActionButton addButton;
     final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
     final String currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -32,12 +38,11 @@ public class ClassroomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar mToolbar = findViewById(R.id.my_toolbar);
+        ButterKnife.bind(this);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        addButton = findViewById(R.id.fab_add);
 
         DatabaseReference ref = database.child("users/" + currentUserUID);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -61,7 +66,6 @@ public class ClassroomActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("key", intent.getStringExtra("Key"));
 
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("TRABALENGUAS"));
         tabLayout.addTab(tabLayout.newTab().setText("MIEMBROS"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);

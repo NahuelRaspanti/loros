@@ -1,0 +1,86 @@
+[
+  {
+    "TaskDesc" : "Bañate una vez en un dia",
+    "TaskType" : 0,
+    "timesCompleted" : 0,
+    "timesToComplete" : 1,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Lavate las axilas",
+    "TaskType" : 0,
+    "timesCompleted" : 0,
+    "timesToComplete" : 2,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Lavate los dientes",
+    "TaskType" : 0,
+    "timesCompleted" : 0,
+    "timesToComplete" : 3,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Ponete lindo",
+    "TaskType" : 0,
+    "timesCompleted" : 0,
+    "timesToComplete" : 3,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Bañate una vez en un dia",
+    "TaskType" : 1,
+    "timesCompleted" : 0,
+    "timesToComplete" : 1,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Bañate 3 vez en un dia",
+    "TaskType" : 1,
+    "timesCompleted" : 0,
+    "timesToComplete" : 3,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Bañate 5 vez en un dia",
+    "TaskType" : 2,
+    "timesCompleted" : 0,
+    "timesToComplete" : 2,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Bañate 6 vez en un dia",
+    "TaskType" : 2,
+    "timesCompleted" : 0,
+    "timesToComplete" : 2,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Bañate 8 vez en un dia",
+    "TaskType" : 2,
+    "timesCompleted" : 0,
+    "timesToComplete" : 1,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Bañate una vez en un dia",
+    "TaskType" : 2,
+    "timesCompleted" : 0,
+    "timesToComplete" : 2,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Bañate una vez en un dia",
+    "TaskType" : 2,
+    "timesCompleted" : 0,
+    "timesToComplete" : 2,
+    "lastUpdateDttm" : "1220227200"
+  },
+  {
+    "TaskDesc" : "Bañate una vez en un dia",
+    "TaskType" : 2,
+    "timesCompleted" : 0,
+    "timesToComplete" : 3,
+    "lastUpdateDttm" : "1220227200"
+  }
+]
