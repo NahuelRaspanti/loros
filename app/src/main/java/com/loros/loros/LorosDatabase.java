@@ -1,12 +1,15 @@
 package com.loros.loros;
 
 import android.app.Application;
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONStringer;
@@ -20,6 +23,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 @Database(entities = {Task.class}, version = 1)
 public abstract class LorosDatabase extends RoomDatabase {
@@ -34,6 +38,17 @@ public abstract class LorosDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             LorosDatabase.class, "loros_database")
+                            .addCallback(new Callback() {
+                                @Override
+                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                                    super.onCreate(db);
+                                    Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            getDatabase(context).taskDao().InsertTasks(getJsonToTaskArray(context));
+                                        }
+                                    });
+                                }})
                             .build();
                 }
             }
@@ -41,7 +56,7 @@ public abstract class LorosDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private Task[] getJsonToTaskArray (Context context) {
+    private static Task[] getJsonToTaskArray (Context context) {
         InputStream raw = context.getResources().openRawResource(R.raw.dbinit);
         Writer writer = new StringWriter();
         char[] buffer = new char[1024];
@@ -58,7 +73,7 @@ public abstract class LorosDatabase extends RoomDatabase {
 
 
         String taskString = writer.toString();
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create();
         Type type = new TypeToken<Task[]>() {
         }.getType();
         Task[] taskList = gson.fromJson(taskString, type);

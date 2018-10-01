@@ -1,5 +1,6 @@
 package com.loros.loros;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         Toolbar mToolbar = findViewById(R.id.my_toolbar);
         addButton = findViewById(R.id.fab_add);
+        LorosDatabase.getDatabase(getApplicationContext());
         initFCM();
         FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
         setSupportActionBar(mToolbar);

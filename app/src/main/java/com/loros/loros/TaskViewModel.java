@@ -3,6 +3,7 @@ package com.loros.loros;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskViewModel extends AndroidViewModel {
