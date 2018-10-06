@@ -1,6 +1,7 @@
 package com.loros.loros;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import java.util.ArrayList;
@@ -18,15 +19,14 @@ public class LorosRepository {
         taskDao = db.taskDao();
     }
 
-    List<Task> GetTasksByType(TaskType taskType){
-        List<Task> mList = null;
-        try {
-            mList = new GetAsyncTask(taskDao).execute(taskType).get();
-        }
-        catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+    LiveData<List<Task>> GetTasksByType(TaskType taskType){
+        LiveData<List<Task>> mList = null;
+        mList =  taskDao.GetTasksByType(taskType);
         return mList;
+    }
+
+    void UpdateTask(int taskId){
+        new UpdateAsyncTask(taskDao).execute(taskId);
     }
 
     public void InsertTask(Task... task) {
@@ -37,7 +37,7 @@ public class LorosRepository {
         taskDao.CompleteTask(task);
     }
 
-    private static class GetAsyncTask extends AsyncTask<TaskType, Void, List<Task>> {
+    private static class GetAsyncTask extends AsyncTask<TaskType, Void, LiveData<List<Task>>> {
 
         private TaskDao mAsyncTaskDao;
 
@@ -46,8 +46,23 @@ public class LorosRepository {
         }
 
         @Override
-        protected List<Task> doInBackground(final TaskType... params) {
+        protected LiveData<List<Task>> doInBackground(final TaskType... params) {
             return mAsyncTaskDao.GetTasksByType(params[0]);
+        }
+    }
+
+    private static class UpdateAsyncTask extends AsyncTask<Integer, Void, Void> {
+
+        private TaskDao mAsyncTaskDao;
+
+        UpdateAsyncTask(TaskDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            mAsyncTaskDao.TaskCompleted(params[0]);
+            return null;
         }
     }
 

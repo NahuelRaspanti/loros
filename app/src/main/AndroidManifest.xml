@@ -32,6 +32,10 @@
             android:name=".ChildActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".TaskListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity android:name=".RecoverPasswordActivity"></activity>
         <activity android:name=".ClassroomActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>

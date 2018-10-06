@@ -1,5 +1,6 @@
 package com.loros.loros;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -15,7 +16,10 @@ public interface TaskDao {
 
     @Query("SELECT * FROM Task WHERE TaskType = :taskType")
     @TypeConverters({TaskTypeConverter.class})
-    List<Task> GetTasksByType(TaskType taskType);
+    LiveData<List<Task>> GetTasksByType(TaskType taskType);
+
+    @Query("UPDATE Task SET TimesCompleted = TimesCompleted + 1 WHERE TaskId = :taskId")
+    void TaskCompleted(int taskId);
 
     @Insert
     void InsertTasks(Task... tasks);

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,7 +15,16 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
 
     private List<Task> taskList;
     private Context mContext;
+    private OnItemClickListener mListener;
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+        void onYesClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public TaskRecyclerAdapter(List<Task> taskList, Context context) {
         this.taskList = taskList;
@@ -32,8 +42,10 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
     public void onBindViewHolder(TaskRecyclerAdapter.ViewHolder holder, int position) {
         Task currentTask = taskList.get(position);
         holder.mTaskDesc.setText(currentTask.getTaskDesc().toUpperCase());
-        holder.mTaskCompleted.setText(currentTask.getTimesCompleted());
-        holder.mTaskTimesToComplete.setText(currentTask.getTimesToComplete());
+        String timesCompleted = String.valueOf(currentTask.getTimesCompleted());
+        String timesToComplete = String.valueOf(currentTask.getTimesToComplete());
+        String completion = timesCompleted  + "/" + timesToComplete;
+        holder.mCompletion.setText(completion);
     }
 
     public void addItems(List<Task> taskList) {
@@ -43,20 +55,46 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        return taskList.size();
+        return taskList == null ? 0 : taskList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTaskDesc;
-        public TextView mTaskCompleted;
-        public TextView mTaskTimesToComplete;
+        public TextView mCompletion;
+        public Button mYesButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mTaskTimesToComplete = itemView.findViewById(R.id.TimesToComplete);
-            mTaskCompleted = itemView.findViewById(R.id.TimesCompleted);
+            mCompletion = itemView.findViewById(R.id.Completion);
             mTaskDesc = itemView.findViewById(R.id.TaskName);
+            mYesButton = itemView.findViewById(R.id.yesBtn);
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null) {
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+            mYesButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null) {
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            mListener.onYesClick(position);
+                        }
+                    }
+                }
+            });
         }
+
+
     }
+
+
 
 }

@@ -1,19 +1,15 @@
 package com.loros.loros;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class MainTaskViewFragment extends Fragment {
     private GridLayout gridLayout;
@@ -29,7 +25,7 @@ public class MainTaskViewFragment extends Fragment {
             final int pos = i;
             card.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    FragmentInitializer(pos);
+                    ActivityInitializer(pos);
                 }
             });
         }
@@ -38,8 +34,8 @@ public class MainTaskViewFragment extends Fragment {
         return view;
     }
 
-    private void FragmentInitializer(int pos) {
-        TaskListFragment fragment = new TaskListFragment();
+    private void ActivityInitializer(int pos) {
+        Intent taskListActivity = new Intent(getActivity(), TaskListActivity.class);
         Bundle args = new Bundle();
         switch (pos) {
             case 0:
@@ -57,10 +53,7 @@ public class MainTaskViewFragment extends Fragment {
             default:
                 Toast.makeText(getContext().getApplicationContext(), "Gil", Toast.LENGTH_SHORT).show();
         }
-        fragment.setArguments(args);
-        FragmentTransaction transaction=getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment); // give your fragment container id in first parameter
-        transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-        transaction.commit();
+        taskListActivity.putExtras(args);
+        startActivity(taskListActivity);
     }
 }

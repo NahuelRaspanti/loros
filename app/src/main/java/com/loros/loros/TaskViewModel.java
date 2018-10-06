@@ -2,6 +2,7 @@ package com.loros.loros;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,12 @@ public class TaskViewModel extends AndroidViewModel {
         mRepository = new LorosRepository(application);
     }
 
-    public List<Task> GetTasksByType(TaskType taskType){
+    public LiveData<List<Task>> GetTasksByType(TaskType taskType){
         return mRepository.GetTasksByType(taskType);
+    }
+
+    public void UpdateTask (int taskId) {
+        mRepository.UpdateTask(taskId);
     }
 
     public void InsertTask(Task... task) {
