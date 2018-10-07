@@ -18,7 +18,8 @@ public interface TaskDao {
     @TypeConverters({TaskTypeConverter.class})
     LiveData<List<Task>> GetTasksByType(TaskType taskType);
 
-    @Query("UPDATE Task SET TimesCompleted = TimesCompleted + 1 WHERE TaskId = :taskId")
+    @Query("UPDATE Task SET TimesCompleted = TimesCompleted + 1, UpdateDttm = " +
+            "date('now') WHERE TaskId = :taskId")
     void TaskCompleted(int taskId);
 
     @Insert

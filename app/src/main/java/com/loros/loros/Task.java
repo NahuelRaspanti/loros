@@ -32,6 +32,9 @@ public class Task {
     @ColumnInfo(name = "TimesToComplete")
     private int timesToComplete;
 
+    @ColumnInfo(name = "DaysToReset")
+    private int daysToReset;
+
     @ColumnInfo(name = "UpdateDttm")
     @TypeConverters({DateTypeConverter.class})
     private Date lastUpdateDttm;
@@ -63,6 +66,10 @@ public class Task {
         return TaskType;
     }
 
+    public int getDaysToReset() {
+        return daysToReset;
+    }
+
     public void setLastUpdateDttm(Date lastUpdateDttm) {
         this.lastUpdateDttm = lastUpdateDttm;
     }
@@ -85,5 +92,9 @@ public class Task {
 
     public void setTaskDesc(String taskDesc) {
         TaskDesc = taskDesc;
+    }
+
+    public void setDaysToReset(int daysToReset) {
+        this.daysToReset = daysToReset;
     }
 }
