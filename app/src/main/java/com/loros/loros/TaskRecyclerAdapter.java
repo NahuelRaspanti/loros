@@ -1,14 +1,14 @@
 package com.loros.loros;
 
+
+
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-
-import java.util.ArrayList;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.button.MaterialButton;
 import java.util.List;
 
 public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapter.ViewHolder> {
@@ -61,7 +61,7 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTaskDesc;
         public TextView mCompletion;
-        public Button mYesButton;
+        public MaterialButton mYesButton;
 
         public ViewHolder(View itemView) {
             super(itemView);

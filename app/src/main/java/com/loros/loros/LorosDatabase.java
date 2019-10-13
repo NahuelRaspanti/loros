@@ -1,18 +1,15 @@
 package com.loros.loros;
 
-import android.app.Application;
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONStringer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,10 +19,9 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Type;
-import java.util.List;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Task.class}, version = 1)
+@Database(entities = {Task.class}, version = 1, exportSchema = false)
 public abstract class LorosDatabase extends RoomDatabase {
 
     private static LorosDatabase INSTANCE;

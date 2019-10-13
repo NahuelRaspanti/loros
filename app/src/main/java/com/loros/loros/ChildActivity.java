@@ -5,9 +5,10 @@ import android.graphics.Color;
 import android.os.Environment;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -47,7 +48,8 @@ import butterknife.ButterKnife;
 public class ChildActivity extends AppCompatActivity {
 
 
-    @BindView (R.id.my_toolbar) Toolbar mToolbar;
+    @BindView (R.id.my_toolbar)
+    Toolbar mToolbar;
     @BindView (R.id.edit_button) Button mEdit;
     @BindView (R.id.save_button) Button mSave;
     @BindView (R.id.my_title) TextView textViewTitle;

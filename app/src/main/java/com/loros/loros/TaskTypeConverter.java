@@ -1,6 +1,6 @@
 package com.loros.loros;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 public class TaskTypeConverter {
 
